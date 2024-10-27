@@ -3,21 +3,29 @@ import React from 'react';
 import SearchInput from './SearchInput';
 import RightContext from './RightContent/RightContext';
 
-
-
-const Navbar:React.FC = () => {
-    
+const Navbar: React.FC = () => {
     return (
-        <Flex bg="white" height="44px" padding="6px 12px">
-            <Flex align="center">
-            <Image src = "/images//comicraft-logo2.svg" height='100px' display = {{  base : "none", md:"unset"}}/>
-            <Image src = "/images//comicraft-logo.svg" height='200px' />
+        <Flex bg="white" height="80px" padding="8px 16px" align="center">
+            <Flex align="center" gap="1px"> {/* Minimal gap */}
+                {/* Book logo: Always visible */}
+                <Image 
+                    src="/images//book logo.png" 
+                    height={{ base: '60px', md: '80px', lg: '100px' }} 
+                    alt="Book Logo" 
+                />
+                {/* Real logo: Larger and very close to the book logo */}
+                <Image 
+                    src="/images//real logo.png" 
+                    height={{ base: '0px', md: '120px', lg: '140px' }} 
+                    display={{ base: 'none', md: 'block' }} 
+                    alt="Real Logo" 
+                    marginLeft="-12px" /* More negative margin for tighter alignment */
+                />
             </Flex>
             <SearchInput />
-           {/* <Directory />*/}
             <RightContext />
         </Flex>
-        
     );
 };
+
 export default Navbar;
