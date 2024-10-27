@@ -1,12 +1,18 @@
 import React, { useState } from 'react'; // React and useState hook
 import { 
   Button, 
+  Center, 
   Flex, 
   Input, 
   Text 
 } from '@chakra-ui/react'; // Chakra UI components
 import { useSetRecoilState } from 'recoil'; // Recoil state hook
 import { authModalState } from '@/atoms/authModalAtom'; // Auth modal atom
+import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth"
+import {auth} from "../../../../firebase/clientApp";
+import {FIREBASE_ERRORS} from "../../../../firebase/error"
+import { FirebaseError } from 'firebase/app';
+
 
 
 const SignUp:React.FC= () => { 
@@ -16,11 +22,30 @@ const SignUp:React.FC= () => {
         password:"",
         confirmPassword: "",
     });
-
+    const [error, setError] = useState('');
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        userError,
+      ] = useCreateUserWithEmailAndPassword(auth);
+    
     // Firebase logic
 
 
-    const onSubmit = () => {};
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (error)setError('');
+        if (signUpForm.password !== signUpForm.confirmPassword){
+            setError('Passwords do not match');
+            return;
+            //Set error
+
+        }
+        //password matches
+    
+        createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); //
+    };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         //update form State
@@ -100,8 +125,15 @@ const SignUp:React.FC= () => {
             mb={2}
             onChange={onChange}  
             />
+            
+            {(error || userError) && (
+            <Text textAlign="center" color="red" fontSize="10pt">
+             {error || (userError && FIREBASE_ERRORS[userError.message as keyof typeof FIREBASE_ERRORS]) || "An unexpected error occurred."}
+            </Text>
+            )}
 
-            <Button width="100%" height ="36px" mt={2} mb={2} type='submit'>
+
+            <Button width="100%" height ="36px" mt={2} mb={2} type='submit' isLoading={loading}>
                 Sign Up</Button>
                 <Flex fontSize='9pt' justifyContent='center'>
                     <Text mr={1}>Already a ComiCrafter?</Text>
