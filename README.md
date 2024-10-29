@@ -2,18 +2,19 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-Create nextjs app using:
+```bash
+#Create nextjs app using:
 npx create-next-app@latest
 
-Install chakra ui,firebase and recoil:
+#Install chakra ui,firebase and recoil:
 npm i @chakra-ui/react @chakra-ui/next-js @emotion/react @emotion/styled framer-motion firebase recoil 
 
-Install firebase hooks:
+#Install firebase hooks:
 npm i react-firebase-hooks
 
-Install react icons:
+#Install react icons:
 npm i react-icons
-
+```
 
 First, run the development server:
 
