@@ -10,7 +10,7 @@ import { useSetRecoilState } from 'recoil'; // Recoil state hook
 import { authModalState } from '@/atoms/authModalAtom'; // Auth modal atom
 import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth"
 import {auth} from "../../../../firebase/clientApp";
-import {FIREBASE_ERRORS} from "../../../../firebase/error"
+import {FIREBASE_ERRORS} from "../../../../firebase/errors"
 import { FirebaseError } from 'firebase/app';
 
 
@@ -35,16 +35,15 @@ const SignUp:React.FC= () => {
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (error)setError('');
+        if (error)setError("");
         if (signUpForm.password !== signUpForm.confirmPassword){
             setError('Passwords do not match');
             return;
             //Set error
-
         }
+        
         //password matches
-    
-        createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); //
+        createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); 
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

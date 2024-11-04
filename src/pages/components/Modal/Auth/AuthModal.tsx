@@ -1,13 +1,20 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { Text,Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import AuthInputs from './AuthInputs';
 import OAuthButtons from './OAuthButton';
+import ResetPassword from './ResetPassword';
+import { auth } from '@/firebase/clientApp';
+import { useAuthState as useFirebaseAuthState } from 'react-firebase-hooks/auth';
+
+
 
 const AuthModal:React.FC = () => {
     
     const[modalState, setModalState] = useRecoilState(authModalState);
+    const [user, loading, error] = useFirebaseAuthState(auth);
+    
 
     const handleClose = () => {
         setModalState(prev => ({
@@ -15,6 +22,11 @@ const AuthModal:React.FC = () => {
             open : false,
         }));
     };
+
+    useEffect(() => {
+      if(user) handleClose();
+      console.log("user", user)
+    }, [user])
 
     return (
       <>
@@ -41,11 +53,16 @@ const AuthModal:React.FC = () => {
           align='center' 
           justify='center' 
           width='70%'  // Correct width value
->
-
-            <OAuthButtons/> 
-            <Text color="gray.500" fontWeight={700}>OR</Text>
-            <AuthInputs />
+            >
+            {modalState.view === 'login' || modalState.view === 'signup' ? (
+             <>
+             <OAuthButtons/> 
+              <Text color="gray.500" fontWeight={700}>OR</Text>
+              <AuthInputs />
+            </>
+            ) : <ResetPassword />}
+            
+            
            {/* <ResetPassword /> */}
 
 
@@ -57,3 +74,7 @@ const AuthModal:React.FC = () => {
     );
 }
 export default AuthModal;
+
+function useAuthState(auth: unknown) {
+  throw new Error('Function not implemented.');
+}

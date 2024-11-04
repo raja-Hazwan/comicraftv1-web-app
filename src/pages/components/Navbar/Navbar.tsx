@@ -2,11 +2,16 @@ import { Flex, Image } from '@chakra-ui/react';
 import React from 'react';
 import SearchInput from './SearchInput';
 import RightContext from './RightContent/RightContext';
+import { auth } from '@/firebase/clientApp';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Directory from './Directory/Directory';
+
 
 const Navbar: React.FC = () => {
+    const [user, loading, error] = useAuthState(auth);
     return (
-        <Flex bg="white" height="80px" padding="8px 16px" align="center">
-            <Flex align="center" gap="1px"> {/* Minimal gap */}
+        <Flex bg="white" height="80px" padding="8px 16px" align="center" justify={{ md: "space-between"}}>
+            <Flex align="center" gap="1px" width={{ base: "40px", md: "auto"}} mr={{ base: 0, md: 2}}> {/* Minimal gap */}
                 {/* Book logo: Always visible */}
                 <Image 
                     src="/images//book logo.png" 
@@ -22,10 +27,14 @@ const Navbar: React.FC = () => {
                     marginLeft="-12px" /* More negative margin for tighter alignment */
                 />
             </Flex>
-            <SearchInput />
-            <RightContext />
+            {user && <Directory />}
+            <SearchInput user={user} />
+            <RightContext user={user} />
         </Flex>
     );
 };
 
 export default Navbar;
+
+
+

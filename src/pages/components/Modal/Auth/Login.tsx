@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
 import {auth} from "../../../../firebase/clientApp";
-import { FIREBASE_ERRORS } from '@/firebase/error';
+import { FIREBASE_ERRORS } from '@/firebase/errors';
 
 type LoginProps = {
     
@@ -17,29 +17,38 @@ const Login:React.FC<LoginProps> = () => {
         password:"",
     });
 
+    const [formError, setFormError] = useState("")
+
     const [
         signInWithEmailAndPassword,
         user,
         loading,
-        error,
-       
+        error
       ] = useSignInWithEmailAndPassword(auth);
 
+      
     // Firebase logic
-
+    
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (formError) setFormError("");
+        if (!loginForm.email.includes("@")) {
+          return setFormError("Please enter a valid email");
+        }
         signInWithEmailAndPassword(loginForm.email, loginForm.password);
-    };
+  };
+    
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        //update form State
-        setLoginForm(prev => ({
-            ...prev,
-            [event.target.name]: event.target.value,
-        }))
-    };       
+    const onChange = ({
+        target: { name, value },
+      }: React.ChangeEvent<HTMLInputElement>) => {
+        setLoginForm((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      };
+        
     return (
         <form onSubmit={onSubmit}>
             <Input 
@@ -89,11 +98,29 @@ const Login:React.FC<LoginProps> = () => {
             onChange={onChange}  
             />
 
-            <Text textAlign="center" color="red" fontSize="10pt">{FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
-
+            <Text textAlign="center" color="red" mt={2} fontSize="10pt" >
+                {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
             </Text>
             <Button width="100%" height ="36px" mt={2} mb={2} type='submit' isLoading={loading}>
-                Log In</Button>
+                Log In
+            </Button>
+            <Flex justifyContent="center" mb={2}>
+                <Text fontSize="9pt" mr={1}>
+                Forgot your password?
+                </Text>
+                <Text
+                fontSize="9pt"
+                color="blue.500"
+                cursor="pointer"
+                onClick={() => setAuthModalState(prev => ({
+                    ...prev,
+                    view:'resetPassword',
+                }))
+              }
+                >
+                Reset
+                </Text>
+            </Flex>
                 <Flex fontSize='9pt' justifyContent='center'>
                     <Text mr={1}>New here?</Text>
                     <Text 
@@ -109,4 +136,5 @@ const Login:React.FC<LoginProps> = () => {
         </form>
     );
 };
+
 export default Login;

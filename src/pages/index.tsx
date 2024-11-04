@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 
 const Home: NextPage = () => {
-  return <div> Comicraft </div>
+  return <div> ComiCraft </div>
 }
 
 export default Home;
