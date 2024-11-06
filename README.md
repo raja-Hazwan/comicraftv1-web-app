@@ -14,7 +14,11 @@ npm i react-firebase-hooks
 
 #Install react icons:
 npm i react-icons
+
+npm i safe-json-stringify
 ```
+
+
 
 First, run the development server:
 

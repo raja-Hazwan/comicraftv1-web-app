@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // React and useState hook
+import React, { useEffect, useState } from 'react'; // React and useState hook
 import { 
   Button, 
   Center, 
@@ -12,7 +12,9 @@ import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth"
 import {auth} from "../../../../firebase/clientApp";
 import {FIREBASE_ERRORS} from "../../../../firebase/errors"
 import { FirebaseError } from 'firebase/app';
-
+import { User } from 'firebase/auth';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'; // Firestore methods
+import { firestore } from '../../../../firebase/clientApp'; // Firestore instance
 
 
 const SignUp:React.FC= () => { 
@@ -25,7 +27,7 @@ const SignUp:React.FC= () => {
     const [error, setError] = useState('');
     const [
         createUserWithEmailAndPassword,
-        user,
+        userCred,
         loading,
         userError,
       ] = useCreateUserWithEmailAndPassword(auth);
@@ -46,13 +48,29 @@ const SignUp:React.FC= () => {
         createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); 
     };
 
+   
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         //update form State
         setsignUpForm(prev => ({
             ...prev,
             [event.target.name]: event.target.value,
         }))
-    };       
+    };    
+    
+    const createUserDocument = async (user: User) => {
+        await setDoc(
+          doc(firestore, "users", user.uid),
+          JSON.parse(JSON.stringify(user))
+        );
+      };
+
+    useEffect(() => {
+        if (userCred) {
+            createUserDocument(userCred.user);
+        }
+    }, [userCred]);
+
+
     return (
         <form onSubmit={onSubmit}>
             <Input 
