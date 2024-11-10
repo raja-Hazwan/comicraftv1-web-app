@@ -1,13 +1,16 @@
-import {GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { firestore } from '@/firebase/clientApp';
 import { doc, getDoc } from 'firebase/firestore';
 import { Community } from '@/atoms/communitiesAtom';
 import safeJsonStringify from 'safe-json-stringify';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import NotFound from "../../components/Community/NotFound";
+import Header from "../../components/Community/Header";
+import PageContent from '@/pages/components/Layout/PageContent';
+
 
 type CommunityPageProps = {
-    communityData?: Community;
+    communityData?: Community | null;
     error?: string;
 };
 
@@ -17,13 +20,27 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
     }
 
     if (!communityData) {
-        return <NotFound/>;
+        return <NotFound />;
     }
 
-    return <div>WELCOME TO {communityData.id}</div>;
+    return (
+    <>
+        <Header communityData={communityData}/>
+        <PageContent>
+               <>
+               <div>LHS</div>
+               <div>LHS</div>
+               <div>LHS</div>
+               <div>LHS</div>
+               </>
+               <>
+               <div>RHS</div>
+               </>
+            </PageContent>
+    </>
+
+    );
 };
-
-
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     try {
@@ -37,8 +54,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             console.log('No document found for the given community ID.');
             return {
                 props: {
-                    
-                    error: "Community not found",
+                    communityData: null, // Set communityData to null to render NotFound
                 },
             };
         }
@@ -61,6 +77,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         };
     }
 }
-
 
 export default CommunityPage;
