@@ -39,7 +39,7 @@ const useCommunityData = () => {
         try {
             // get users snippets
             const snippetDocs = await getDocs(
-                collection(firestore, 'users/${user?.uid}/communitySnippets')
+                collection(firestore, `users/${user?.uid}/communitySnippets`)
             );
 
             const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
@@ -70,7 +70,7 @@ const useCommunityData = () => {
           batch.set(
             doc(
                 firestore, 
-                'users/${user?.uid}/communitySnippets', 
+                `users/${user?.uid}/communitySnippets`, 
                 communityData.id
             ), 
             newSnippet
@@ -101,7 +101,7 @@ const useCommunityData = () => {
 
             // deleting the community snippet from user
             batch.delete(
-                doc(firestore, 'users/${user?.uid}/communitySnippets', communityId)
+                doc(firestore, `users/${user?.uid}/communitySnippets`, communityId)
         )
             
             batch.update(doc(firestore, 'communities', communityId), {
