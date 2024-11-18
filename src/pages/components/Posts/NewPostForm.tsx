@@ -22,6 +22,7 @@ export type TabItemType = {
 
 type NewPostFormProps = {
     user: User;
+    communityImageUrl?: string;
 };
 
 const formTabs: TabItemType[] = [
@@ -47,7 +48,7 @@ const formTabs: TabItemType[] = [
     },
 ];
 
-const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityImageUrl }) => {
     const router = useRouter();
     const [selectedTab, setSelectTab] = useState(formTabs[0].title);
     const [textInputs, setTextInputs] = useState({
@@ -66,6 +67,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         // Create a new post object (without the 'id' field here)
         const newPost: Post = {
             communityId: communityId as string,
+            communityImageURL: communityImageUrl || '',
             creatorId: user.uid,
             creatorDisplayname: user.email!.split("@")[0],
             title: textInputs.title,

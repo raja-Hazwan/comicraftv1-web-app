@@ -9,26 +9,26 @@ import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRecoilValue } from 'recoil';
 
-const SubmitPostPage:React.FC = () => {
+const SubmitPostPage: React.FC = () => {
   const [user] = useAuthState(auth);
-  //const communityStateValue = useRecoilValue(communityState);
-  const {communityStateValue} = useCommunityData();
+  const { communityStateValue } = useCommunityData();
   console.log("COMMUNITY", communityStateValue);
 
   return (
     <PageContent>
       <>
-        <Box p = "14px 0px" borderBottom = "1px solid" borderColor = "white">
-          <Text>Create a Posts</Text>
+        <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
+          <Text>Create a Post</Text>
         </Box>
-        {user && <NewPostForm user={user} />}
+        {user && <NewPostForm user={user} communityImageUrl={communityStateValue.currentCommunity?.imageURL} />}
       </>
-     <> 
-      {communityStateValue.currentCommunity && (
-        <About communityData={communityStateValue.currentCommunity}/>
-    )}
+      <>
+        {communityStateValue.currentCommunity && (
+          <About communityData={communityStateValue.currentCommunity} />
+        )}
       </>
     </PageContent>
-  )
-}
-export default SubmitPostPage
+  );
+};
+
+export default SubmitPostPage;
