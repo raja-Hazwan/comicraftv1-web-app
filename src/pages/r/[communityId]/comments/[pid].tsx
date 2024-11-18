@@ -11,6 +11,8 @@ import { Post } from '@/atoms/postsAtom';
 import About from '@/pages/components/Community/About';
 import { communityState } from '../../../../atoms/communitiesAtom';
 import useCommunityData from '@/hooks/useCommunityData';
+import Comments from '@/pages/components/Posts/Comments/Comments';
+import { User } from 'firebase/auth';
 
 
 const PostPage:React.FC= () => {
@@ -62,7 +64,11 @@ const PostPage:React.FC= () => {
                   }
                
                 />}
-             {/* Comments*/}
+             <Comments 
+              user={user as User} 
+              selectedPost={postStateValue.selectedPost} 
+              communityId={postStateValue.selectedPost?.communityId as string} 
+             />
         </>
         <>
        { communityStateValue.currentCommunity && 
