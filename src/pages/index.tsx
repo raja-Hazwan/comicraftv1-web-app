@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Stack } from "@chakra-ui/react";
 import { auth, firestore } from "@/firebase/clientApp";
-import { Post, postState, PostVote } from "@/atoms/postsAtom";
-import { useRecoilValue } from "recoil";
+import { Post, PostVote } from "@/atoms/postsAtom";
 import usePosts from "@/hooks/usePosts";
 import useCommunityData from "@/hooks/useCommunityData";
 import PageContent from "./components/Layout/PageContent";
@@ -20,7 +19,7 @@ const Home: NextPage = () => {
   const { postStateValue, setPostStateValue, onVote, onSelectPost, onDeletePost } = usePosts();
   const { communityStateValue } = useCommunityData();
 
-  const buildUserHomeFeed = async () => {
+  const buildUserHomeFeed = useCallback(async () => {
     setLoading(true);
     try {
       if (communityStateValue.mySnippets.length) {
@@ -48,9 +47,9 @@ const Home: NextPage = () => {
       console.log(`buildUserHomeFeed error`, error);
     }
     setLoading(false);
-  };
+  }, [communityStateValue.mySnippets, setPostStateValue]);
 
-  const buildNoUserHomeFeed = async () => {
+  const buildNoUserHomeFeed = useCallback(async () => {
     setLoading(true);
     try {
       const postQuery = query(
@@ -72,9 +71,9 @@ const Home: NextPage = () => {
       console.log("buildNoUserHomeFeed", error);
     }
     setLoading(false);
-  };
+  }, [setPostStateValue]);
 
-  const getUserPostVotes = async () => {
+  const getUserPostVotes = useCallback(async () => {
     try {
       const postIds = postStateValue.posts.map((post) => post.id);
       const postVotesQuery = query(
@@ -94,16 +93,16 @@ const Home: NextPage = () => {
     } catch (error) {
       console.log("getUserPostVotes error", error);
     }
-  };
+  }, [postStateValue.posts, user?.uid, setPostStateValue]);
 
   // useEffects
   useEffect(() => {
     if (communityStateValue.snippetsFetched) buildUserHomeFeed();
-  }, [communityStateValue.snippetsFetched]);
+  }, [communityStateValue.snippetsFetched, buildUserHomeFeed]);
 
   useEffect(() => {
     if (!user && !loadingUser) buildNoUserHomeFeed();
-  }, [user, loadingUser]);
+  }, [user, loadingUser, buildNoUserHomeFeed]);
 
   useEffect(() => {
     if (user && postStateValue.posts.length) getUserPostVotes();
@@ -114,7 +113,7 @@ const Home: NextPage = () => {
         postVotes: [],
       }));
     };
-  }, [user, postStateValue.posts]);
+  }, [user, postStateValue.posts, getUserPostVotes, setPostStateValue]);
 
   return (
     <PageContent>
@@ -124,7 +123,7 @@ const Home: NextPage = () => {
           <PostLoader />
         ) : (
           <Stack>
-            {postStateValue.posts.map((post: Post, index) => (
+            {postStateValue.posts.map((post: Post) => (
               <PostItem
                 key={post.id}
                 post={post}
@@ -143,7 +142,6 @@ const Home: NextPage = () => {
         )}
       </>
       <>
-        {/* Replace individual components with Wrapper */}
         <Wrapper />
       </>
     </PageContent>
