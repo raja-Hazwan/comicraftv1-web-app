@@ -9,7 +9,7 @@ import useDirectory from '@/hooks/useDirectory';
 import { defaultMenuItem } from '@/atoms/directoryMenuAtom';
 
 const Navbar: React.FC = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth); // Removed unused 'loading' and 'error'
   const { onSelectMenuItem } = useDirectory();
 
   return (

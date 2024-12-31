@@ -35,39 +35,23 @@
 
 // Option 3
 const USER = {
-    id:"userId",
-    /**
-     * 
-     * 
-     * 
-     * 
-     */
-    // subcollection
+    id: "userId",
     communitySnippets: [
-        {
-            communityId: "commId1",
-            
-        },
-        {   
-            communityId: "commId2",
-        },
-        /**
-         * 
-         * 
-         * 
-         */
-        {
-            communityId: "commId10",
-        },
+        { communityId: "commId1" },
+        { communityId: "commId2" },
+        { communityId: "commId10" },
     ],
 };
 
-
 const COMMUNITY = {
-    id:"commId",
-    /**
-     * 
-     */
-
+    id: "commId",
     numOfMembers: "23947230472389245093480594387",
 };
+
+// Temporary usage to avoid linter errors
+const tempUse = () => {
+    console.log("User Data:", USER);
+    console.log("Community Data:", COMMUNITY);
+};
+
+tempUse();

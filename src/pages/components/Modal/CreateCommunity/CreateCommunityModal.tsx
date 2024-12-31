@@ -1,5 +1,4 @@
 import {
-  Spinner,
   Button,
   Modal,
   ModalOverlay,
@@ -104,9 +103,13 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       handleClose();
       toggleMenuOpen();
       router.push(`/r/${communityName}`); // Ensure proper navigation
-    } catch (error: any) {
-      console.error("handleCreateCommunity error", error);
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("handleCreateCommunity error", error.message);
+        setError(error.message);
+      } else {
+        console.error("handleCreateCommunity error", error);
+      }
     }
 
     setLoading(false);
