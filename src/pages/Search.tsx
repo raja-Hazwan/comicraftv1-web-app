@@ -1,7 +1,7 @@
 import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { firestore } from '@/firebase/clientApp';
 import PostItem from '@/pages/components/Posts/PostItem';
 import { Post } from '@/atoms/postsAtom';
@@ -13,7 +13,7 @@ const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     if (!searchTerm) return;
 
     setLoading(true);
@@ -35,16 +35,16 @@ const Search: React.FC = () => {
       console.error('Error fetching posts:', error);
     }
     setLoading(false);
-  };
+  }, [searchTerm]);
 
   useEffect(() => {
     fetchPosts(); // Trigger fetch whenever the search term changes
-  }, [searchTerm]);
+  }, [fetchPosts]);
 
   return (
     <Box p={5}>
       <Text fontSize="2xl" fontWeight="bold" mb={5}>
-        Search Results for "{searchTerm}"
+        Search Results for &quot;{searchTerm}&quot;
       </Text>
       {loading ? (
         <Spinner />
