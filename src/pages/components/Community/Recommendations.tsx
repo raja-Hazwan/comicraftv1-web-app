@@ -4,68 +4,60 @@ import useCommunityData from '@/hooks/useCommunityData';
 import { Box, Button, Flex, Icon, Link, Skeleton, SkeletonCircle, Stack, Text, Image } from '@chakra-ui/react';
 import { query, collection, orderBy, limit, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { FaReddit } from 'react-icons/fa';
 import { GiQuillInk } from 'react-icons/gi';
 
-type RecommendationsProps = {
-    
-};
+const Recommendations: React.FC = () => {
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
 
-const Recommendations:React.FC = () => {
-    
-    const [communities, setCommunities] = useState<Community[]>([]);
-    const [loading, setLoading] = useState(false);
-    const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
+  const getCommunityRecommendations = async () => {
+    setLoading(true);
 
-    const getCommunityRecommendations = async () => {
-        setLoading(true);
-
-        try {
-            const communityQuery = query(
-                collection(firestore, "communities"),
-                orderBy("numberOfMembers", "desc"),
-                limit(5) //set limit top communities to be shown
-            );
-            const communityDocs =  await getDocs(communityQuery);
-            const communities = communityDocs.docs.map(doc => ({ 
-                id: doc.id, 
-                ...doc.data()
-            }))
-            setCommunities(communities as Community[])
-
-        } catch (error) {
-            console.log('getCommunityRecommendations error', error);
-        }
-        setLoading(false);
+    try {
+      const communityQuery = query(
+        collection(firestore, "communities"),
+        orderBy("numberOfMembers", "desc"),
+        limit(5) // Set limit top communities to be shown
+      );
+      const communityDocs = await getDocs(communityQuery);
+      const communities = communityDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCommunities(communities as Community[]);
+    } catch (error) {
+      console.log('getCommunityRecommendations error', error);
     }
+    setLoading(false);
+  };
 
-    useEffect (() => {
-        getCommunityRecommendations();
-    }, []);
+  useEffect(() => {
+    getCommunityRecommendations();
+  }, []);
 
-    return (
-        <Flex 
-            direction="column" 
-            bg="white" 
-            borderRadius={4} 
-            border="1px solid" 
-            borderColor="gray.300"
-        >
-            <Flex 
-                align="flex-end" 
-                color="gold" 
-                p="6px 10px" 
-                height="70px" 
-                borderRadius="4px 4px 0px 0px"
-                fontWeight={700}
-                bgImage='url(/images/comicraft-bannerTopCommunity.png)'
-                backgroundSize="cover"
-                bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)),
-        url('images/comicraft-bannerTopCommunity.png')"
-            >
-                Top Communities
-            </Flex>
-            <Flex direction="column">
+  return (
+    <Flex
+      direction="column"
+      bg="white"
+      borderRadius={4}
+      border="1px solid"
+      borderColor="gray.300"
+    >
+      <Flex
+        align="flex-end"
+        color="gold"
+        p="6px 10px"
+        height="70px"
+        borderRadius="4px 4px 0px 0px"
+        fontWeight={700}
+        bgImage="url(/images/comicraft-bannerTopCommunity.png)"
+        backgroundSize="cover"
+        bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)), url('images/comicraft-bannerTopCommunity.png')"
+      >
+        Top Communities
+      </Flex>
+      <Flex direction="column">
         {loading ? (
           <Stack mt={2} p={3}>
             <Flex justify="space-between" align="center">
@@ -111,12 +103,7 @@ const Recommendations:React.FC = () => {
                             mr={2}
                           />
                         ) : (
-                          <Icon
-                            as={GiQuillInk} 
-                            fontSize={30}
-                            color="gold"
-                            mr={2}
-                          />
+                          <Icon as={GiQuillInk} fontSize={30} color="gold" mr={2} />
                         )}
                         <span
                           style={{
@@ -155,4 +142,5 @@ const Recommendations:React.FC = () => {
     </Flex>
   );
 };
+
 export default Recommendations;
