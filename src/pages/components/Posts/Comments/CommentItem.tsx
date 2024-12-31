@@ -3,7 +3,6 @@ import { Timestamp } from 'firebase/firestore';
 import moment from 'moment';
 import React from 'react';
 import { GiBookAura } from 'react-icons/gi';
-import { IoMdArrowRoundDown } from 'react-icons/io';
 import { IoArrowDownCircleOutline, IoArrowUpCircleOutline } from 'react-icons/io5';
 
 export type Comment = {

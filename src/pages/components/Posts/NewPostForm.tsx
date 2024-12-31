@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, CloseButton, Flex, Icon, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Flex, Icon, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { BiPoll } from "react-icons/bi";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
@@ -55,9 +55,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityImageUrl }) =>
         title: "",
         body: "",
     });
-    
-    //const [selectedFile, setSelectedFile] = useState<string>();
-    const { selectedFile,setSelectedFile, onSelectFile}= useSelectFile();
+    const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -102,26 +100,17 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityImageUrl }) =>
 
             // Redirect the user back to the community page
             router.back();
-        } catch (error: any) {
-            console.log("handleCreatePost error", error.message);
+        } catch (error: unknown) {
+            // Safe error handling
+            if (error instanceof Error) {
+                console.log("handleCreatePost error", error.message);
+            } else {
+                console.log("Unexpected error", error);
+            }
             setError(true);
         }
         setLoading(false);
     };
-
-    // const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const reader = new FileReader();
-
-    //     if (event.target.files?.[0]) {
-    //         reader.readAsDataURL(event.target.files[0]);
-    //     }
-
-    //     reader.onload = (readerEvent) => {
-    //         if (readerEvent.target?.result) {
-    //             setSelectedFile(readerEvent.target.result as string);
-    //         }
-    //     };
-    // };
 
     const OnTextChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

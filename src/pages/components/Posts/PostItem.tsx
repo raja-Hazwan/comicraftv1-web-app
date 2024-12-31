@@ -5,7 +5,14 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { BsChat, BsDot } from 'react-icons/bs';
-import { IoArrowDownCircleOutline, IoArrowDownCircleSharp, IoArrowRedoOutline, IoArrowUpCircleOutline, IoArrowUpCircleSharp, IoBookmarkOutline } from 'react-icons/io5';
+import {
+  IoArrowDownCircleOutline,
+  IoArrowDownCircleSharp,
+  IoArrowRedoOutline,
+  IoArrowUpCircleOutline,
+  IoArrowUpCircleSharp,
+  IoBookmarkOutline,
+} from 'react-icons/io5';
 import { FaReddit } from 'react-icons/fa';
 
 type PostItemProps = {
@@ -43,8 +50,10 @@ const PostItem: React.FC<PostItemProps> = ({
       if (!onSelectPost) {
         router.push(`/r/${post.communityId}`);
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
     setLoadingDelete(false);
   };
@@ -97,6 +106,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     borderRadius="full"
                     boxSize="18px"
                     src={post.communityImageURL}
+                    alt="Community Avatar"
                     mr={2}
                   />
                 ) : (
@@ -122,7 +132,7 @@ const PostItem: React.FC<PostItemProps> = ({
               <Image
                 src={post.imageURL}
                 maxHeight="460px"
-                alt="Post Image"
+                alt="Post Content Image"
                 display={loadingImage ? 'none' : 'unset'}
                 onLoad={() => setLoadingImage(false)}
               />

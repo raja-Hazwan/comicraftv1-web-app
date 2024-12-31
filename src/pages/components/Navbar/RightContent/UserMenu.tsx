@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from '@chakra-ui/icons/ChevronDown';
-import { Menu, MenuButton, Button, MenuList, MenuItem, Icon, Flex, MenuDivider, Text } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, Icon, Flex, MenuDivider, Text } from '@chakra-ui/react';
 import { signOut, User } from 'firebase/auth';
 import React from 'react';
 import { FaRedditSquare } from 'react-icons/fa';
