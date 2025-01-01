@@ -9,7 +9,7 @@ import { useSetRecoilState } from 'recoil';
 import CommentItem, { Comment } from './CommentItem';
 
 type CommentsProps = {
-  user: User;
+  user: User | null; // Allow null for not logged-in users
   selectedPost: Post | null;
   communityId: string;
 };
@@ -23,7 +23,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   const setPostState = useSetRecoilState(postState);
 
   const onCreateComment = async () => {
-    if (!selectedPost) return;
+    if (!selectedPost || !user) return; // Ensure user is logged in
 
     setCreateLoading(true);
     try {
@@ -131,7 +131,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   return (
     <Box bg="white" borderRadius="0px 0px 4px 4px" p={2}>
       <Flex direction="column" pl={10} pr={4} mb={6} fontSize="10pt" width="100%">
-        {!fetchLoading && (
+        {!fetchLoading && user ? ( // Show comment input only if the user is logged in
           <CommentInput
             commentText={commentText}
             setCommentText={setCommentText}
@@ -139,6 +139,12 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
             createLoading={createLoading}
             onCreateComment={onCreateComment}
           />
+        ) : (
+          !fetchLoading && (
+            <Text fontWeight="bold" textAlign="center">
+              Log in to add a comment.
+            </Text>
+          )
         )}
       </Flex>
       <Stack spacing={6} p={2}>
@@ -169,7 +175,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
               comment={comment}
               onDeleteComment={onDeleteComment}
               loadingDelete={loadingDeleteId === comment.id}
-              userId={user.uid}
+              userId={user?.uid ?? ''} // Provide fallback for userId
             />
           ))
         )}
