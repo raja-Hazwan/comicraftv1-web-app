@@ -1,15 +1,28 @@
-import { Community } from '@/atoms/communitiesAtom';
-import { firestore } from '@/firebase/clientApp';
-import useCommunityData from '@/hooks/useCommunityData';
-import { Box, Button, Flex, Icon, Link, Skeleton, SkeletonCircle, Stack, Text, Image } from '@chakra-ui/react';
-import { query, collection, orderBy, limit, getDocs } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { GiQuillInk } from 'react-icons/gi';
+import { Community } from "@/atoms/communitiesAtom";
+import { firestore } from "@/firebase/clientApp";
+import useCommunityData from "@/hooks/useCommunityData";
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Link,
+  Skeleton,
+  SkeletonCircle,
+  Stack,
+  Text,
+  Image,
+} from "@chakra-ui/react";
+import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { GiQuillInk } from "react-icons/gi";
+import { useRouter } from "next/router"; // Import useRouter
 
 const Recommendations: React.FC = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const [loading, setLoading] = useState(false);
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
+  const router = useRouter(); // Initialize the router
 
   const getCommunityRecommendations = async () => {
     setLoading(true);
@@ -27,7 +40,7 @@ const Recommendations: React.FC = () => {
       }));
       setCommunities(communities as Community[]);
     } catch (error) {
-      console.log('getCommunityRecommendations error', error);
+      console.log("getCommunityRecommendations error", error);
     }
     setLoading(false);
   };
@@ -132,7 +145,11 @@ const Recommendations: React.FC = () => {
               );
             })}
             <Box p="10px 20px">
-              <Button height="30px" width="100%">
+              <Button
+                height="30px"
+                width="100%"
+                onClick={() => router.push("/communities")} // Redirect to Communities page
+              >
                 View All
               </Button>
             </Box>
