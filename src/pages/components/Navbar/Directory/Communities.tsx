@@ -6,6 +6,7 @@ import { communityState } from '@/atoms/communitiesAtom';
 import { useRecoilValue } from 'recoil';
 import MenuListItem from './MenuListItem';
 import { GiBookAura } from 'react-icons/gi';
+import { AiFillHome } from 'react-icons/ai'; // Importing Home icon
 
 const Communities: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,18 @@ const Communities: React.FC = () => {
     <>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
 
+      {/* Home Link */}
+      <Box mt={3} mb={4}>
+        <MenuListItem
+          key="home"
+          icon={AiFillHome} // Home icon
+          displayText="Home"
+          link="/"
+          iconColor="black"
+        />
+      </Box>
+
+      {/* Moderating Communities */}
       <Box mt={3} mb={4}>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           MODERATING
@@ -37,6 +50,7 @@ const Communities: React.FC = () => {
           ))}
       </Box>
 
+      {/* My Communities */}
       <Box mt={3} mb={4}>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           My Communities

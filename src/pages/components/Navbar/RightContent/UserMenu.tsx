@@ -2,7 +2,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons/ChevronDown';
 import { Menu, MenuButton, MenuList, MenuItem, Icon, Flex, MenuDivider, Text } from '@chakra-ui/react';
 import { signOut, User } from 'firebase/auth';
 import React from 'react';
-import { FaRedditSquare } from 'react-icons/fa';
+import { PiUserSquareDuotone } from "react-icons/pi";
 import { VscAccount } from 'react-icons/vsc';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineLogin } from 'react-icons/md';
@@ -39,7 +39,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           <Flex align="center">
             {user ? (
               <>
-                <Icon fontSize={24} mr={1} color="gray.300" as={FaRedditSquare} />
+                <Icon fontSize={24} mr={1} color="gray.300" as={PiUserSquareDuotone} />
                 <Flex
                   direction="column"
                   display={{ base: "none", lg: "flex" }}

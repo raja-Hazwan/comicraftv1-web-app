@@ -1,4 +1,4 @@
-import { Flex, Image } from '@chakra-ui/react';
+import { Flex, Image, Box } from '@chakra-ui/react';
 import React from 'react';
 import SearchInput from './SearchInput';
 import RightContext from './RightContent/RightContext';
@@ -22,19 +22,33 @@ const Navbar: React.FC = () => {
         cursor="pointer"
         onClick={() => onSelectMenuItem(defaultMenuItem)}
       >
-        <Image
-          src="/images//book logo.png"
-          height={{ base: '60px', md: '80px', lg: '100px' }}
-          alt="Book Logo"
-        />
-        <Image
-          src="/images//real logo.png"
-          height={{ base: '0px', md: '120px', lg: '140px' }}
-          display={{ base: 'none', md: 'block' }}
-          alt="Real Logo"
+        {/* Book Logo with Hover Animation */}
+        <Box
+          transition="transform 0.3s ease"
+          _hover={{ transform: 'scale(1.1)' }} // Scale up on hover
+        >
+          <Image
+            src="/images//book logo.png"
+            height={{ base: '60px', md: '80px', lg: '100px' }}
+            alt="Book Logo"
+          />
+        </Box>
+
+        {/* Real Logo with Hover Animation */}
+        <Box
+          transition="transform 0.3s ease"
+          _hover={{ transform: 'scale(1.1) rotate(5deg)' }} // Scale up and rotate slightly on hover
           marginLeft="-12px"
-        />
+        >
+          <Image
+            src="/images//real logo.png"
+            height={{ base: '0px', md: '120px', lg: '140px' }}
+            display={{ base: 'none', md: 'block' }}
+            alt="Real Logo"
+          />
+        </Box>
       </Flex>
+
       {user && <Directory />}
       {/* Passing user prop to enable search functionality */}
       <SearchInput user={user} />

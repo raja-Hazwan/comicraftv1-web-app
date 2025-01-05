@@ -8,7 +8,7 @@ import { RiCakeLine } from "react-icons/ri";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, firestore, storage } from '@/firebase/clientApp';
 import useSelectFile from '@/hooks/useSelectFile';
-import { FaReddit } from 'react-icons/fa';
+import { SiInoreader } from "react-icons/si";
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { updateDoc, doc } from 'firebase/firestore';
 import { useSetRecoilState } from 'recoil';
@@ -115,7 +115,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                       alt="Community Image"
                     />
                   ) : (
-                    <Icon as={FaReddit} fontSize={40} color="brand.100" mr={2} />
+                    <Icon as={SiInoreader} fontSize={40} color="brand.100" mr={2} />
                   )}
                 </Flex>
 

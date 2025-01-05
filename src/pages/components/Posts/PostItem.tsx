@@ -13,7 +13,7 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from 'react-icons/io5';
-import { FaReddit } from 'react-icons/fa';
+import { SiInoreader } from 'react-icons/si'; // Importing SiInoreader
 
 type PostItemProps = {
   post: Post;
@@ -59,7 +59,6 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
-    
     <Flex
       border="1px solid"
       bg="white"
@@ -90,7 +89,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     mr={2}
                   />
                 ) : (
-                  <Icon as={FaReddit} fontSize={18} mr={1} color="blue.500" />
+                  <Icon as={SiInoreader} fontSize={18} mr={1} color="blue.500" /> // Updated fallback icon
                 )}
                 <Text fontWeight={700} _hover={{ textDecoration: 'underline' }}>
                   r/{post.communityId}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Community } from '@/atoms/communitiesAtom';
 import { Flex, Button, Box, Icon, Image ,Text } from '@chakra-ui/react';
-import { FaReddit } from 'react-icons/fa';
+import { SiInoreader } from "react-icons/si";
 import useCommunityData from '@/hooks/useCommunityData';
 
 type HeaderProps = {
@@ -35,7 +35,7 @@ const Header:React.FC<HeaderProps> = ({communityData}) => {
 
                     ) : (
 
-                    <Icon as={FaReddit} 
+                    <Icon as={SiInoreader} 
                     fontSize={65} 
                     position="relative" 
                     top={-3} 

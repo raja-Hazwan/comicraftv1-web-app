@@ -1,6 +1,6 @@
 import { Post, postState, PostVote } from '@/atoms/postsAtom';
 import { auth, firestore, storage } from '@/firebase/clientApp';
-import { collection, deleteDoc, doc, getDocs, query, where, writeBatch } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, query, where, writeBatch, orderBy, limit } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
 import React, { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -14,6 +14,7 @@ const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const currentCommunity = useRecoilValue(communityState).currentCommunity;
 
+  // Handles voting on posts
   const onVote = async (
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
@@ -41,7 +42,6 @@ const usePosts = () => {
       if (!existingVote) {
         // New vote
         const postVoteRef = doc(collection(firestore, 'users', `${user.uid}/postVotes`));
-
         const newVote: PostVote = {
           id: postVoteRef.id,
           postId: post.id,
@@ -110,6 +110,7 @@ const usePosts = () => {
     }
   };
 
+  // Handles selecting a post
   const onSelectPost = (post: Post) => {
     setPostStateValue((prev) => ({
       ...prev,
@@ -118,6 +119,7 @@ const usePosts = () => {
     router.push(`/r/${post.communityId}/comments/${post.id}`);
   };
 
+  // Handles deleting a post
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
       if (post.imageURL) {
@@ -140,6 +142,7 @@ const usePosts = () => {
     }
   };
 
+  // Fetches user's post votes for a specific community
   const getCommunityPostVote = useCallback(
     async (communityId: string) => {
       try {
@@ -165,6 +168,30 @@ const usePosts = () => {
     [user, setPostStateValue]
   );
 
+  // Fetches trending posts globally (sorted by voteCount)
+  const getTrendingPosts = useCallback(async () => {
+    try {
+      const trendingPostsQuery = query(
+        collection(firestore, 'posts'),
+        orderBy('voteCount', 'desc'),
+        limit(10)
+      );
+
+      const postDocs = await getDocs(trendingPostsQuery);
+      const trendingPosts = postDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: trendingPosts as Post[],
+      }));
+    } catch (err) {
+      console.error('Error in getTrendingPosts:', err);
+    }
+  }, [setPostStateValue]);
+
   useEffect(() => {
     if (!user || !currentCommunity?.id) return;
     getCommunityPostVote(currentCommunity?.id);
@@ -176,6 +203,7 @@ const usePosts = () => {
     onVote,
     onSelectPost,
     onDeletePost,
+    getTrendingPosts, // Exposed for use in Trending.tsx
   };
 };
 

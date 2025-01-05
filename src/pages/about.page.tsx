@@ -1,6 +1,20 @@
 import React from "react";
-import { Box, Heading, Text, VStack, Stack, Icon, Divider, Container } from "@chakra-ui/react";
-import { FiInfo } from "react-icons/fi";
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Stack,
+  Icon,
+  Divider,
+  Container,
+  SimpleGrid,
+  Avatar,
+  HStack,
+  Button,
+} from "@chakra-ui/react";
+import { FiInfo, FiUsers, FiGlobe, FiTrendingUp } from "react-icons/fi";
+import Link from "next/link"; // Import the Link component from Next.js
 
 const AboutPage: React.FC = () => {
   return (
@@ -11,16 +25,14 @@ const AboutPage: React.FC = () => {
         <Heading as="h1" size="xl">
           About Us
         </Heading>
-        <Text fontSize="lg" color="gray.600">
-          Welcome to our platform! We aim to provide a community-driven space to share and discuss trending topics, news, and ideas.
-        </Text>
+       
       </VStack>
 
-      {/* Content in a white container */}
-      <Container maxW="container.md">
+      {/* Content */}
+      <Container maxW="container.lg">
         <Box bg="white" p={8} rounded="lg" shadow="md">
-          {/* About Content */}
           <Stack spacing={6}>
+            {/* Mission Section */}
             <Box>
               <Heading as="h2" size="md" mb={2}>
                 Our Mission
@@ -32,35 +44,74 @@ const AboutPage: React.FC = () => {
 
             <Divider />
 
+            {/* Core Values Section */}
             <Box>
-              <Heading as="h2" size="md" mb={2}>
-                What We Offer
+              <Heading as="h2" size="md" mb={4}>
+                Our Core Values
               </Heading>
-              <Text fontSize="md" color="gray.700">
-                From trending discussions to in-depth insights, our platform curates the best content for our users. Whether you're here to share your ideas, learn something new, or connect with like-minded individuals, we've got you covered!
-              </Text>
+              <SimpleGrid columns={[1, 2, 3]} spacing={6}>
+                <VStack>
+                  <Icon as={FiUsers} boxSize={8} color="blue.500" />
+                  <Text fontWeight="bold">Community</Text>
+                  <Text textAlign="center" fontSize="sm" color="gray.600">
+                    We value inclusivity and building meaningful connections.
+                  </Text>
+                </VStack>
+                <VStack>
+                  <Icon as={FiGlobe} boxSize={8} color="green.500" />
+                  <Text fontWeight="bold">Global Reach</Text>
+                  <Text textAlign="center" fontSize="sm" color="gray.600">
+                    Connecting people from all over the world.
+                  </Text>
+                </VStack>
+                <VStack>
+                  <Icon as={FiTrendingUp} boxSize={8} color="purple.500" />
+                  <Text fontWeight="bold">Innovation</Text>
+                  <Text textAlign="center" fontSize="sm" color="gray.600">
+                    Constantly improving to meet user needs.
+                  </Text>
+                </VStack>
+              </SimpleGrid>
             </Box>
 
             <Divider />
 
+            {/* Team Section */}
             <Box>
-              <Heading as="h2" size="md" mb={2}>
-                How It Works
+              <Heading as="h2" size="md" mb={4}>
+                Meet the Team
               </Heading>
-              <Text fontSize="md" color="gray.700">
-                Users can create posts, vote on their favorite content, and explore trending topics. The most popular posts rise to the top, ensuring that the best ideas get the recognition they deserve.
-              </Text>
+              <HStack spacing={6}>
+                <VStack>
+                  <Avatar name="Raja Hazwan" src="/john.jpg" size="lg" />
+                  <Text fontWeight="bold">Raja Hazwan</Text>
+                  <Text fontSize="sm" color="gray.600">
+                    Founder & CEO
+                  </Text>
+                </VStack>
+                <VStack>
+                  <Avatar name="Omar Haziq" src="/jane.jpg" size="lg" />
+                  <Text fontWeight="bold">Omar Haziq</Text>
+                  <Text fontSize="sm" color="gray.600">
+                    CTO
+                  </Text>
+                </VStack>
+              </HStack>
             </Box>
 
             <Divider />
 
-            <Box>
-              <Heading as="h2" size="md" mb={2}>
-                Get Involved
+            {/* Call-to-Action Section */}
+            <Box textAlign="center">
+              <Heading as="h2" size="lg" mb={4}>
+                Ready to Join Us?
               </Heading>
-              <Text fontSize="md" color="gray.700">
-                Join the conversation by creating an account and participating in discussions. We value your input and look forward to building a vibrant community together.
+              <Text fontSize="md" color="gray.700" mb={6}>
+                Be a part of our growing community and share your voice with like-minded individuals!
               </Text>
+              <Button as={Link} href="/" colorScheme="blue" size="lg">
+                Get Started
+              </Button>
             </Box>
           </Stack>
         </Box>

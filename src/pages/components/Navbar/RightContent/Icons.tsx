@@ -1,7 +1,8 @@
 import React from "react";
-import { Flex, Icon } from "@chakra-ui/react";
+import { Flex, Icon, Button, Text } from "@chakra-ui/react";
 import { FiInfo } from "react-icons/fi"; // About icon
 import { useRouter } from "next/router"; // Next.js routing
+import { FaFire } from "react-icons/fa"; // Trending icon
 
 const Icons: React.FC = () => {
   const router = useRouter(); // Initialize the router
@@ -16,7 +17,26 @@ const Icons: React.FC = () => {
         borderColor="gray.200"
         pr={4} // Padding for spacing
       >
-       
+        {/* Trending This Month Button */}
+        <Flex
+          as="button"
+          align="center"
+          justify="center"
+          aria-label="Trending This Month"
+          _hover={{
+            transform: "scale(1.2)", // Slight zoom on hover
+            color: "red.500", // Change to red on hover
+          }}
+          transition="all 0.3s ease" // Smooth animation
+          onClick={() => router.push("/trending")} // Redirect to the Trending page
+          mr={4} // Margin-right for spacing between icons
+        >
+          <Icon as={FaFire} boxSize={6} color="red.400" />
+          <Text ml={2} fontSize="sm" fontWeight="bold" color="gray.600">
+            Trending
+          </Text>
+        </Flex>
+
         {/* About Icon */}
         <Flex
           as="button"
