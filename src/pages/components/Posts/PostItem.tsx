@@ -59,11 +59,12 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   return (
+    
     <Flex
       border="1px solid"
       bg="white"
       borderColor="gray.300"
-      borderRadius="10px"
+      borderRadius="15px"
       _hover={{ borderColor: 'gray.500' }}
       cursor="pointer"
       onClick={() => onSelectPost && onSelectPost(post)}
