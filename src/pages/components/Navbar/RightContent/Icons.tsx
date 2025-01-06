@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text, useBreakpointValue } from "@chakra-ui/react";
 import { FiInfo } from "react-icons/fi"; // About icon
 import { useRouter } from "next/router"; // Next.js routing
 import { FaFire } from "react-icons/fa"; // Trending icon
@@ -7,11 +7,14 @@ import { FaFire } from "react-icons/fa"; // Trending icon
 const Icons: React.FC = () => {
   const router = useRouter(); // Initialize the router
 
+  // Responsive breakpoint value to control visibility of icons
+  const displayIcons = useBreakpointValue({ base: "none", md: "flex" });
+
   return (
     <Flex>
       {/* Parent Flex for Icons */}
       <Flex
-        display={{ base: "none", md: "flex" }} // Hide on small screens
+        display={displayIcons} // Hide on small screens
         align="center"
         borderRight="1px solid"
         borderColor="gray.200"

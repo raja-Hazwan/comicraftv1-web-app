@@ -14,12 +14,18 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
-      router.push(`/Search?query=${searchTerm.trim()}`); // Redirect to Search page with query
+      router.push(`/Search?query=${encodeURIComponent(searchTerm.trim())}`); // Encode search term
     }
   };
 
   return (
-    <Flex flexGrow={1} maxWidth={user ? 'auto' : '600px'} mr={2} align="center">
+    <Flex
+      flexGrow={1}
+      maxWidth={user ? 'auto' : '600px'}
+      mr={2}
+      align="center"
+      display={{ base: 'none', md: 'flex' }} // Hide on mobile, show on desktop
+    >
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <SearchIcon color="gray.300" mb={1} />
@@ -28,7 +34,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Track input value
           onKeyDown={handleSearch} // Trigger search on Enter
-          placeholder="Search posts by title"
+          placeholder="Search"
           fontSize="10pt"
           _placeholder={{ color: 'gray.500' }}
           _hover={{
