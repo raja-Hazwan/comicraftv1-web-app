@@ -34,7 +34,7 @@ const Icons: React.FC = () => {
           onClick={() => router.push("/trending")} // Redirect to the Trending page
           mr={4} // Margin-right for spacing between icons
         >
-          <Icon as={FaFire} boxSize={6} color="orange.400" />
+          <Icon as={FaFire} boxSize={5} color="orange.400" /> {/* Adjusted boxSize */}
           <Text ml={2} fontSize="sm" fontWeight="bold" color="gray.600">
             Trending
           </Text>
@@ -56,7 +56,7 @@ const Icons: React.FC = () => {
           transition="background-color 0.2s ease" // Smooth transition
           onClick={() => router.push("/about")} // Redirect to the About page
         >
-          <Icon as={FiInfo} boxSize={6} color="orange.400" />
+          <Icon as={FiInfo} boxSize={5} color="orange.400" /> {/* Keeping boxSize consistent */}
         </Flex>
       </Flex>
     </Flex>

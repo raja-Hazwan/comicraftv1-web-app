@@ -61,7 +61,7 @@ const Communities: React.FC = () => {
                 bg="white" // Set background color to white
                 boxShadow="md" // Add box shadow for a subtle effect
                 _hover={{ boxShadow: "lg", cursor: "pointer" }} // Increase shadow on hover
-                onClick={() => router.push(`/community/${item.id}`)}
+                onClick={() => router.push(`r/${item.id}`)}
                 width={{ base: "100%", sm: "calc(50% - 16px)", md: "calc(33.33% - 16px)" }}
                 mx="8px" my="8px">
                 <Flex direction="column" align="center">

@@ -14,6 +14,7 @@ import {
   IoBookmarkOutline,
 } from 'react-icons/io5';
 import { SiInoreader } from 'react-icons/si'; // Importing SiInoreader
+import Link from 'next/link'; // Import Link from Next.js
 
 type PostItemProps = {
   post: Post;
@@ -91,9 +92,11 @@ const PostItem: React.FC<PostItemProps> = ({
                 ) : (
                   <Icon as={SiInoreader} fontSize={18} mr={1} color="blue.500" /> // Updated fallback icon
                 )}
-                <Text fontWeight={700} _hover={{ textDecoration: 'underline' }}>
-                  r/{post.communityId}
-                </Text>
+                <Link href={`/r/${post.communityId}`} passHref>
+                  <Text fontWeight={700} _hover={{ textDecoration: 'underline' }}>
+                    r/{post.communityId}
+                  </Text>
+                </Link>
                 <Icon as={BsDot} color="gray.500" fontSize={8} />
               </>
             )}
