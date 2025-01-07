@@ -80,6 +80,7 @@ const Trending: React.FC = () => {
         <Heading as="h1" size="lg" textAlign="center" color="blackAlpha.800">
           Trending Posts
         </Heading>
+        
       </Flex>
 
       <Flex justify="center" mb={4}>

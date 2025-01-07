@@ -5,10 +5,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { firestore } from '@/firebase/clientApp';
 import PostItem from '@/pages/components/Posts/PostItem';
 import { Post } from '@/atoms/postsAtom';
+import { Icon } from '@chakra-ui/react';
+import { GiQuillInk } from 'react-icons/gi';
+import { Image } from '@chakra-ui/react';
 
 type Community = {
   id: string;
+  name: string;
+  description?: string;
+  creatorId: string;
   numberOfMembers: number;
+  imageURL?: string;
   privacyType: string;
 };
 
@@ -20,31 +27,13 @@ const Search: React.FC = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Function to fetch communities
-  const fetchCommunities = useCallback(async () => {
-    setLoading(true);
-    try {
-      const communitiesCollection = collection(firestore, 'communities');
-      const communityDocs = await getDocs(communitiesCollection);
-      const fetchedCommunities = communityDocs.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Community[];
-      setCommunities(fetchedCommunities);
-    } catch (error: any) {
-      console.error('Error fetching communities:', error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   // Function to fetch posts and communities based on search term
   const fetchPostsAndCommunities = useCallback(async () => {
     if (!searchTerm) return;
 
     setLoading(true);
     try {
-      // Fetch posts
+      // Fetch posts - keeping this the same as it works
       const postsQuery = query(
         collection(firestore, 'posts'),
         where('title', '>=', searchTerm),
@@ -59,20 +48,20 @@ const Search: React.FC = () => {
 
       setPosts(postsData);
 
-      // Fetch communities by ID (exact match)
-      const communityQuery = query(
-        collection(firestore, 'communities'),
-        where('id', '==', searchTerm)
+      // Fetch all communities first
+      const communitiesCollection = collection(firestore, 'communities');
+      const communityDocs = await getDocs(communitiesCollection);
+      const allCommunities = communityDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Community[];
+
+      // Filter communities based on search term
+      const filteredCommunities = allCommunities.filter(community => 
+        community.id.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
-      const communityDocs = await getDocs(communityQuery);
-      const communitiesData = communityDocs.docs.map((doc) => ({
-        id: doc.id,
-        numberOfMembers: doc.data().numberOfMembers || 0,
-        privacyType: doc.data().privacyType || 'public',
-      }));
-
-      setCommunities(communitiesData);
+      setCommunities(filteredCommunities);
     } catch (error) {
       console.error('Error fetching posts and communities:', error);
     } finally {
@@ -81,9 +70,8 @@ const Search: React.FC = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    fetchCommunities(); // Fetch communities initially
-    fetchPostsAndCommunities(); // Fetch posts and communities based on search term
-  }, [fetchCommunities, fetchPostsAndCommunities]);
+    fetchPostsAndCommunities();
+  }, [fetchPostsAndCommunities]);
 
   return (
     <Box p={5}>
@@ -107,16 +95,34 @@ const Search: React.FC = () => {
                   borderWidth="1px"
                   borderRadius="md"
                   cursor="pointer"
-                  _hover={{ bg: 'gray.100' }}
+                  bg="white"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
                   onClick={() => router.push(`/r/${community.id}`)}
                 >
-                  <Text fontSize="lg" fontWeight="bold">
-                    {community.id}
-                  </Text>
-                  <Text fontSize="sm">{community.numberOfMembers} members</Text>
-                  <Text fontSize="sm" color="gray.500">
-                    {community.privacyType}
-                  </Text>
+                  <Flex align="center" gap={4}>
+                    {community.imageURL ? (
+                      <Image 
+                        src={community.imageURL} 
+                        alt={`${community.id} community`} 
+                        boxSize="50px" 
+                        borderRadius="full" 
+                      />
+                    ) : (
+                      <Icon as={GiQuillInk} fontSize={30} color="gold" />
+                    )}
+                    <Box flex="1">
+                      <Text fontSize="lg" fontWeight="bold">
+                        r/{community.id}
+                      </Text>
+                      <Text fontSize="sm">{community.numberOfMembers} members</Text>
+                      {community.description && (
+                        <Text fontSize="sm" color="gray.500" noOfLines={2}>
+                          {community.description}
+                        </Text>
+                      )}
+                    </Box>
+                  </Flex>
                 </Box>
               ))}
             </Flex>
@@ -135,8 +141,8 @@ const Search: React.FC = () => {
                   key={post.id}
                   post={post}
                   userIsCreator={false}
-                  onVote={() => {}} // Replace with actual onVote functionality
-                  onDeletePost={() => Promise.resolve(true)} // No delete functionality for search
+                  onVote={() => {}}
+                  onDeletePost={() => Promise.resolve(true)}
                   onSelectPost={(post) => router.push(`/r/${post.communityId}/comments/${post.id}`)}
                   userVoteValue={0}
                 />

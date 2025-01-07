@@ -9,15 +9,15 @@ import useDirectory from '@/hooks/useDirectory';
 import { defaultMenuItem } from '@/atoms/directoryMenuAtom';
 
 const Navbar: React.FC = () => {
-  const [user] = useAuthState(auth); // Removed unused 'loading' and 'error'
+  const [user] = useAuthState(auth);
   const { onSelectMenuItem } = useDirectory();
 
   return (
     <Flex bg="white" height="80px" padding="8px 16px" align="center" justify={{ md: 'space-between' }}>
       <Flex
         align="center"
-        gap="1px"
-        width={{ base: '40px', md: 'auto' }}
+        gap={{ base: '8px', md: '1px' }}
+        width={{ base: 'auto', md: 'auto' }}
         mr={{ base: 0, md: 2 }}
         cursor="pointer"
         onClick={() => onSelectMenuItem(defaultMenuItem)}
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
         {/* Book Logo with Hover Animation */}
         <Box
           transition="transform 0.3s ease"
-          _hover={{ transform: 'scale(1.1)' }} // Scale up on hover
+          _hover={{ transform: 'scale(1.1)' }}
         >
           <Image
             src="/images//book logo.png"
@@ -33,11 +33,10 @@ const Navbar: React.FC = () => {
             alt="Book Logo"
           />
         </Box>
-
         {/* Real Logo with Hover Animation */}
         <Box
           transition="transform 0.3s ease"
-          _hover={{ transform: 'scale(1.1) rotate(5deg)' }} // Scale up and rotate slightly on hover
+          _hover={{ transform: 'scale(1.1) rotate(5deg)' }}
           marginLeft="-12px"
         >
           <Image
@@ -48,7 +47,6 @@ const Navbar: React.FC = () => {
           />
         </Box>
       </Flex>
-
       {user && <Directory />}
       {/* Passing user prop to enable search functionality */}
       <SearchInput user={user} />

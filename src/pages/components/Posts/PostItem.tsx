@@ -39,6 +39,13 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const [shareableLink, setShareableLink] = useState('');
+
+  const generateShareableLink = () => {
+    const currentUrl = window.location.origin;
+    const postUrl = `${currentUrl}/r/${post.communityId}/comments/${post.id}`;
+    setShareableLink(postUrl);
+  };
 
   const handleDelete = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
@@ -149,15 +156,26 @@ const PostItem: React.FC<PostItemProps> = ({
             <Text fontSize="9pt">{post.numberOfComments}</Text>
           </Flex>
           {/* Share */}
-          <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: 'gray.200' }} cursor="pointer">
+          <Flex 
+            align="center"
+            p="8px 10px"
+            borderRadius={4}
+            _hover={{ bg: 'gray.200' }}
+            cursor="pointer"
+            onClick={generateShareableLink}
+          >
             <Icon as={IoArrowRedoOutline} mr={2} />
             <Text fontSize="9pt">Share</Text>
           </Flex>
-          {/* Save */}
-          <Flex align="center" p="8px 10px" borderRadius={4} _hover={{ bg: 'gray.200' }} cursor="pointer">
-            <Icon as={IoBookmarkOutline} mr={2} />
-            <Text fontSize="9pt">Save</Text>
-          </Flex>
+          {shareableLink && (
+            <Flex align="center" mt={2}>
+              <Text fontSize="9pt" mr={2}>Shareable Link:</Text>
+              <a href={shareableLink} target="_blank" rel="noopener noreferrer" className="blue.500">
+                {shareableLink}
+              </a>
+            </Flex>
+          )}
+  
           {/* Delete (if creator) */}
           {userIsCreator && (
             <Flex

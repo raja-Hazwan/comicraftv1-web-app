@@ -1,7 +1,5 @@
 import { Alert, AlertIcon, Flex, Icon, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { BiPoll } from "react-icons/bi";
-import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { IoDocumentText } from "react-icons/io5";
 import TabItem from "./TabItem";
 import TextInputs from './PostForm/TextInputs';
@@ -31,21 +29,10 @@ const formTabs: TabItemType[] = [
         icon: IoDocumentText
     },
     {
-        title: "Images & Video",
+        title: "Images Only", // Renamed from "Images & Video"
         icon: IoDocumentText
     },
-    {
-        title: "Link",
-        icon: BsLink45Deg
-    },
-    {
-        title: "Poll",
-        icon: BiPoll
-    },
-    {
-        title: "Talk",
-        icon: BsMic
-    },
+   
 ];
 
 const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityImageUrl }) => {
@@ -143,7 +130,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, communityImageUrl }) =>
                         loading={loading}
                     />
                 )}
-                {selectedTab === 'Images & Video' && <ImageUpload
+                {selectedTab === 'Images Only' && <ImageUpload
                     selectedFile={selectedFile}
                     onSelectImage={onSelectFile}
                     setSelectedTab={setSelectTab}
