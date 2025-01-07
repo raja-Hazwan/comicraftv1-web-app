@@ -134,7 +134,7 @@ const SignUp: React.FC = () => {
             
             {(error || userError) && (
                 <Text textAlign="center" color="red" fontSize="10pt">
-                    {error || (userError && FIREBASE_ERRORS[userError.message as keyof typeof FIREBASE_ERRORS]) || "An unexpected error occurred."}
+                    {error || (userError && FIREBASE_ERRORS[userError.message as keyof typeof FIREBASE_ERRORS]) || "An unexpected error occurred password need at least 6 chars."}
                 </Text>
             )}
 
