@@ -13,8 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           {/* Set the title */}
           <title>ComiCraft : Arts Meet Community</title>
           
-          {/* Set the favicon */}
-          <link rel="icon" href="/images/favicon.ico" />
+        
           
           {/* Optional: Meta tags for SEO and responsiveness */}
           <meta name="description" content="ComiCraft: A place where art meets community. Share and explore comics, art, and creativity!" />

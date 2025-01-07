@@ -14,7 +14,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
-      router.push(`/Search?query=${encodeURIComponent(searchTerm.trim())}`); // Encode search term
+      router.push(`/Search?query=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
 
@@ -22,9 +22,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
     <Flex
       flexGrow={1}
       maxWidth={user ? 'auto' : '600px'}
-      mr={2}
+      mr={{ base: 0, md: 2 }} // Adjust margin for mobile
       align="center"
-      display={{ base: 'none', md: 'flex' }} // Hide on mobile, show on desktop
+      width={{ base: "full", md: "auto" }} // Full width on mobile
+      px={{ base: 2, md: 0 }} // Add padding on mobile
     >
       <InputGroup>
         <InputLeftElement pointerEvents="none">
@@ -32,10 +33,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
         </InputLeftElement>
         <Input
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Track input value
-          onKeyDown={handleSearch} // Trigger search on Enter
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleSearch}
           placeholder="Search"
-          fontSize="10pt"
+          fontSize={{ base: "9pt", md: "10pt" }} // Slightly smaller font on mobile
           _placeholder={{ color: 'gray.500' }}
           _hover={{
             bg: 'white',
